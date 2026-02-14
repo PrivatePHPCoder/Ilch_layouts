@@ -1,0 +1,1036 @@
+/* =====================================================
+   MINECRAFT WORLD - Ilch CMS Layout
+   Pixel-Art, Blocky, Overworld + Nether Mix
+   3-Column Layout with Crafting-UI Elements
+   ===================================================== */
+
+/* ===== CSS CUSTOM PROPERTIES ===== */
+:root {
+    /* Minecraft Greens */
+    --mc-grass:          #5b8c32;
+    --mc-grass-light:    #7bb840;
+    --mc-grass-dark:     #3d6b1f;
+
+    /* Dirt / Earth */
+    --mc-dirt:           #8b6b4a;
+    --mc-dirt-dark:      #6b4f32;
+    --mc-dirt-light:     #a87e58;
+
+    /* Stone */
+    --mc-stone:          #7a7a7a;
+    --mc-stone-dark:     #4a4a4a;
+    --mc-stone-light:    #9a9a9a;
+
+    /* Sky */
+    --mc-sky-day:        #78b9ff;
+    --mc-sky-sunset:     #ff8844;
+    --mc-sky-night:      #0a0a2e;
+
+    /* Wood */
+    --mc-wood:           #6b5030;
+    --mc-wood-dark:      #4a3520;
+    --mc-wood-light:     #8b6b48;
+    --mc-wood-plank:     #b89860;
+
+    /* UI Colors (Minecraft inventory style) */
+    --mc-inv-bg:         #c6c6c6;
+    --mc-inv-dark:       #555555;
+    --mc-inv-light:      #ffffff;
+    --mc-inv-slot:       #8b8b8b;
+
+    /* Accents */
+    --mc-emerald:        #17dd62;
+    --mc-diamond:        #5be0d8;
+    --mc-gold:           #fcdb05;
+    --mc-redstone:       #dd1818;
+    --mc-lapis:          #2546a8;
+    --mc-nether:         #a83232;
+    --mc-enderpurple:    #8b32a8;
+
+    /* Text */
+    --mc-text:           #3f3f3f;
+    --mc-text-light:     #e0e0e0;
+    --mc-text-shadow:    #2a2a2a;
+
+    /* Fonts */
+    --font-pixel:        'Silkscreen', 'Courier New', monospace;
+    --font-body:         'Nunito', 'Verdana', sans-serif;
+
+    /* Layout */
+    --sidebar-width:     240px;
+}
+
+/* ===== RESET & BASE ===== */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-body);
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.7;
+    color: var(--mc-text);
+    background-color: var(--mc-sky-day);
+    background-image:
+            linear-gradient(180deg, var(--mc-sky-day) 0%, #a8d8ff 60%, #d4ecff 100%);
+    background-attachment: fixed;
+    min-height: 100vh;
+    /* Pixelated rendering for that MC feel */
+    image-rendering: pixelated;
+    -webkit-font-smoothing: auto;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+a {
+    color: var(--mc-grass-dark);
+    text-decoration: none;
+    font-weight: 700;
+    transition: color 0.15s;
+}
+
+a:hover {
+    color: var(--mc-emerald);
+    text-decoration: underline;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-pixel);
+    font-weight: 700;
+    color: var(--mc-text);
+    line-height: 1.3;
+    text-shadow: 2px 2px 0 rgba(0,0,0,0.15);
+}
+
+h1 {
+    font-size: 1.4rem;
+    margin-top: 0;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 4px solid var(--mc-grass);
+    position: relative;
+}
+
+label {
+    font-weight: 600;
+}
+
+/* No border-radius anywhere — blocky Minecraft style */
+*,
+*::before,
+*::after {
+    border-radius: 0 !important;
+}
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--mc-stone-dark);
+    border: 2px solid var(--mc-stone);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--mc-stone);
+    border: 2px solid var(--mc-stone-dark);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--mc-grass);
+}
+
+/* ===== NAVIGATION — Minecraft Button Bar ===== */
+.mc-header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.mc-nav {
+    display: none;
+    background: var(--mc-inv-bg);
+    border-bottom: 4px solid var(--mc-inv-dark);
+    padding: 0;
+    /* Minecraft inventory style: light top, dark bottom (beveled) */
+    box-shadow:
+            inset 0 2px 0 var(--mc-inv-light),
+            inset 0 -2px 0 var(--mc-inv-dark),
+            0 4px 0 rgba(0,0,0,0.2);
+}
+
+@media (min-width: 992px) {
+    .mc-nav {
+        display: flex;
+    }
+}
+
+.mc-nav__inner {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 6px 20px;
+    gap: 20px;
+}
+
+.mc-nav__brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    flex-shrink: 0;
+}
+
+.mc-nav__brand-icon {
+    font-size: 1.4rem;
+    color: var(--mc-emerald);
+    text-shadow: 2px 2px 0 rgba(0,0,0,0.2);
+}
+
+.mc-nav__brand-text {
+    font-family: var(--font-pixel);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--mc-text);
+    text-shadow: 1px 1px 0 rgba(0,0,0,0.1);
+}
+
+.mc-nav__links {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0;
+    flex: 1;
+    justify-content: center;
+}
+
+.mc-nav__group {
+    display: inline-flex;
+    align-items: center;
+}
+
+.mc-nav__group-title {
+    display: none;
+}
+
+.mc-nav__list {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.mc-nav__item {
+    position: relative;
+}
+
+/* Minecraft-style button: beveled edges */
+.mc-nav__link {
+    display: block;
+    padding: 6px 14px;
+    margin: 2px;
+    font-family: var(--font-pixel);
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--mc-text-light);
+    text-decoration: none;
+    text-shadow: 2px 2px 0 var(--mc-text-shadow);
+    background: var(--mc-stone);
+    border: 2px solid;
+    border-color: var(--mc-stone-light) var(--mc-stone-dark) var(--mc-stone-dark) var(--mc-stone-light);
+    transition: all 0.1s;
+    cursor: pointer;
+}
+
+.mc-nav__link:hover {
+    background: var(--mc-stone-light);
+    border-color: var(--mc-inv-light) var(--mc-stone) var(--mc-stone) var(--mc-inv-light);
+    color: var(--mc-gold);
+    text-decoration: none;
+    text-shadow: 2px 2px 0 var(--mc-text-shadow), 0 0 8px rgba(252, 219, 5, 0.3);
+}
+
+.mc-nav__link:active {
+    background: var(--mc-stone-dark);
+    border-color: var(--mc-stone-dark) var(--mc-stone-light) var(--mc-stone-light) var(--mc-stone-dark);
+}
+
+.mc-nav__item--active > .mc-nav__link {
+    background: var(--mc-grass-dark);
+    border-color: var(--mc-grass-light) var(--mc-grass-dark) var(--mc-grass-dark) var(--mc-grass-light);
+    color: var(--mc-inv-light);
+}
+
+/* Dropdown */
+.mc-nav__dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: var(--mc-inv-bg);
+    border: 3px solid;
+    border-color: var(--mc-inv-light) var(--mc-inv-dark) var(--mc-inv-dark) var(--mc-inv-light);
+    box-shadow: 4px 4px 0 rgba(0,0,0,0.25);
+    list-style: none;
+    margin: 0;
+    padding: 4px;
+    min-width: 180px;
+    z-index: 100;
+}
+
+.mc-nav__item:hover > .mc-nav__dropdown {
+    display: block;
+}
+
+.mc-nav__item--child::after {
+    content: '';
+}
+
+.mc-nav__dropdown .mc-nav__link {
+    font-size: 0.68rem;
+    padding: 5px 12px;
+    margin: 1px;
+}
+
+/* ===== MOBILE NAVIGATION ===== */
+.mc-nav-mobile {
+    background: var(--mc-inv-bg);
+    border-bottom: 4px solid var(--mc-inv-dark);
+    box-shadow: inset 0 2px 0 var(--mc-inv-light);
+}
+
+.mc-nav-mobile__bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 16px;
+}
+
+.mc-nav-mobile__brand {
+    font-family: var(--font-pixel);
+    font-size: 0.9rem;
+    color: var(--mc-text);
+    text-decoration: none;
+    text-shadow: 1px 1px 0 rgba(0,0,0,0.1);
+}
+
+.mc-nav-mobile__toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background: var(--mc-stone);
+    border: 2px solid;
+    border-color: var(--mc-stone-light) var(--mc-stone-dark) var(--mc-stone-dark) var(--mc-stone-light);
+    cursor: pointer;
+}
+
+.mc-nav-mobile__icon {
+    display: block;
+    width: 18px;
+    height: 2px;
+    background: var(--mc-text-light);
+    position: relative;
+    box-shadow: 0 -6px 0 var(--mc-text-light), 0 6px 0 var(--mc-text-light);
+}
+
+.mc-nav-mobile__menu {
+    padding: 8px;
+    border-top: 2px solid var(--mc-inv-dark);
+}
+
+.mc-nav-mobile__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.mc-nav-mobile__group-title {
+    display: block;
+    padding: 6px 10px 2px;
+    font-family: var(--font-pixel);
+    font-size: 0.6rem;
+    color: var(--mc-stone);
+    text-transform: uppercase;
+}
+
+.mc-nav-mobile__sub {
+    list-style: none;
+    margin: 0;
+    padding: 0 0 0 12px;
+}
+
+.mc-nav-mobile__menu a {
+    display: block;
+    padding: 6px 12px;
+    margin: 2px 0;
+    font-family: var(--font-pixel);
+    font-size: 0.7rem;
+    color: var(--mc-text-light);
+    text-shadow: 1px 1px 0 var(--mc-text-shadow);
+    background: var(--mc-stone);
+    border: 2px solid;
+    border-color: var(--mc-stone-light) var(--mc-stone-dark) var(--mc-stone-dark) var(--mc-stone-light);
+    text-decoration: none;
+}
+
+.mc-nav-mobile__menu a:hover {
+    color: var(--mc-gold);
+}
+
+.mc-nav-mobile__item--active > a {
+    background: var(--mc-grass-dark);
+    border-color: var(--mc-grass-light) var(--mc-grass-dark) var(--mc-grass-dark) var(--mc-grass-light);
+}
+
+.mc-nav-mobile__item--child a {
+    font-size: 0.65rem;
+    padding: 4px 10px;
+    background: var(--mc-stone-dark);
+}
+
+/* ===== HERO BANNER — Animated Day/Night Sky ===== */
+.mc-hero {
+    position: relative;
+    width: 100%;
+    height: 260px;
+    overflow: hidden;
+}
+
+@media (min-width: 768px) {
+    .mc-hero { height: 360px; }
+}
+
+@media (min-width: 1200px) {
+    .mc-hero { height: 440px; }
+}
+
+/* Animated Sky Background */
+.mc-hero__sky {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    animation: dayCycle 60s ease-in-out infinite;
+    background: linear-gradient(180deg, var(--mc-sky-day) 0%, #a8d8ff 50%, #d4ecff 100%);
+}
+
+@keyframes dayCycle {
+    0%, 100% {
+        background: linear-gradient(180deg, #78b9ff 0%, #a8d8ff 50%, #d4ecff 100%);
+    }
+    35% {
+        background: linear-gradient(180deg, #78b9ff 0%, #a8d8ff 50%, #d4ecff 100%);
+    }
+    42% {
+        background: linear-gradient(180deg, #ff6633 0%, #ff9966 30%, #ffcc88 60%, #ffeecc 100%);
+    }
+    50% {
+        background: linear-gradient(180deg, #0a0a2e 0%, #1a1a4e 40%, #2a2a5e 100%);
+    }
+    65% {
+        background: linear-gradient(180deg, #0a0a2e 0%, #1a1a4e 40%, #2a2a5e 100%);
+    }
+    72% {
+        background: linear-gradient(180deg, #ff8855 0%, #ffaa77 30%, #78b9ff 80%);
+    }
+}
+
+/* Sun */
+.mc-hero__sun {
+    position: absolute;
+    width: 48px;
+    height: 48px;
+    background: var(--mc-gold);
+    box-shadow: 0 0 30px rgba(252, 219, 5, 0.6), 0 0 60px rgba(252, 219, 5, 0.3);
+    z-index: 1;
+    /* Pixelated sun */
+    image-rendering: pixelated;
+    animation: sunMove 60s ease-in-out infinite;
+}
+
+@keyframes sunMove {
+    0%   { top: 70%; left: 10%; opacity: 0; }
+    5%   { top: 20%; left: 20%; opacity: 1; }
+    35%  { top: 10%; left: 50%; opacity: 1; }
+    45%  { top: 70%; left: 80%; opacity: 0; }
+    100% { top: 70%; left: 10%; opacity: 0; }
+}
+
+/* Moon */
+.mc-hero__moon {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background: #e8e8e8;
+    box-shadow: 0 0 20px rgba(232, 232, 232, 0.4);
+    z-index: 1;
+    animation: moonMove 60s ease-in-out infinite;
+}
+
+@keyframes moonMove {
+    0%, 40%  { top: 80%; left: 80%; opacity: 0; }
+    50%      { top: 15%; left: 30%; opacity: 1; }
+    65%      { top: 10%; left: 55%; opacity: 1; }
+    75%      { top: 80%; left: 85%; opacity: 0; }
+    100%     { top: 80%; left: 80%; opacity: 0; }
+}
+
+/* Stars */
+.mc-star {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: #ffffff;
+    opacity: 0;
+    animation: starTwinkle 60s ease-in-out infinite;
+}
+
+.mc-star:nth-child(odd) {
+    animation-delay: 0.5s;
+    width: 3px;
+    height: 3px;
+}
+
+@keyframes starTwinkle {
+    0%, 40%  { opacity: 0; }
+    50%      { opacity: 1; }
+    65%      { opacity: 0.8; }
+    75%      { opacity: 0; }
+    100%     { opacity: 0; }
+}
+
+/* Hero Image */
+.mc-hero__image {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 70%;
+    object-fit: cover;
+    object-position: bottom;
+    z-index: 2;
+    image-rendering: auto;
+}
+
+.mc-hero__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 3;
+    background:
+            linear-gradient(180deg, transparent 0%, transparent 40%, rgba(0,0,0,0.3) 100%);
+}
+
+/* Hero Content */
+.mc-hero__content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 4;
+    text-align: center;
+    width: 90%;
+    max-width: 600px;
+}
+
+.mc-hero__title {
+    font-family: var(--font-pixel);
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #ffffff;
+    text-shadow:
+            3px 3px 0 var(--mc-text-shadow),
+            -1px -1px 0 var(--mc-text-shadow),
+            1px -1px 0 var(--mc-text-shadow),
+            -1px 1px 0 var(--mc-text-shadow);
+    margin: 0 0 8px;
+    border: none;
+    padding: 0;
+    /* Minecraft title style */
+    letter-spacing: 2px;
+}
+
+@media (min-width: 768px) {
+    .mc-hero__title { font-size: 2.2rem; }
+}
+
+@media (min-width: 1200px) {
+    .mc-hero__title { font-size: 2.8rem; }
+}
+
+.mc-hero__subtitle {
+    font-family: var(--font-pixel);
+    font-size: 0.7rem;
+    color: var(--mc-gold);
+    text-shadow: 2px 2px 0 var(--mc-text-shadow);
+    letter-spacing: 2px;
+    margin: 0;
+}
+
+@media (min-width: 768px) {
+    .mc-hero__subtitle { font-size: 0.85rem; letter-spacing: 3px; }
+}
+
+/* ===== GRASS / DIRT BORDER ===== */
+.mc-hero__ground,
+.mc-footer__ground {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 5;
+}
+
+.mc-hero__ground {
+    height: 28px;
+}
+
+.mc-hero__grass,
+.mc-footer__grass {
+    height: 8px;
+    background: var(--mc-grass);
+    /* Pixelated grass top pattern */
+    background-image:
+            repeating-linear-gradient(
+                    90deg,
+                    var(--mc-grass) 0px,
+                    var(--mc-grass) 8px,
+                    var(--mc-grass-light) 8px,
+                    var(--mc-grass-light) 12px,
+                    var(--mc-grass) 12px,
+                    var(--mc-grass) 24px,
+                    var(--mc-grass-dark) 24px,
+                    var(--mc-grass-dark) 28px
+            );
+    border-top: 2px solid var(--mc-grass-light);
+}
+
+.mc-hero__dirt,
+.mc-footer__dirt {
+    height: 20px;
+    background: var(--mc-dirt);
+    background-image:
+            repeating-linear-gradient(
+                    90deg,
+                    var(--mc-dirt) 0px,
+                    var(--mc-dirt) 10px,
+                    var(--mc-dirt-dark) 10px,
+                    var(--mc-dirt-dark) 14px,
+                    var(--mc-dirt) 14px,
+                    var(--mc-dirt) 28px,
+                    var(--mc-dirt-light) 28px,
+                    var(--mc-dirt-light) 32px
+            );
+    border-top: 2px solid var(--mc-dirt-dark);
+}
+
+/* ===== MAIN LAYOUT — 3 Columns ===== */
+.mc-main {
+    padding: 24px 0 0;
+    position: relative;
+    z-index: 1;
+    /* Stone-like background behind content */
+    background:
+            linear-gradient(180deg, #d4ecff 0%, var(--mc-stone-light) 100px, var(--mc-stone-light) 100%);
+}
+
+.mc-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 0 12px;
+}
+
+@media (min-width: 992px) {
+    .mc-layout {
+        grid-template-columns: var(--sidebar-width) 1fr var(--sidebar-width);
+        gap: 20px;
+        padding: 0;
+    }
+}
+
+/* ===== SIDEBARS ===== */
+.mc-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* On mobile, show sidebars below content */
+@media (max-width: 991px) {
+    .mc-sidebar--left  { order: 2; }
+    .mc-sidebar--right { order: 3; }
+    .mc-content        { order: 1; }
+}
+
+/* ===== WIDGETS — Crafting/Inventory Style ===== */
+.mc-widget {
+    background: var(--mc-inv-bg);
+    border: 3px solid;
+    border-color: var(--mc-inv-light) var(--mc-inv-dark) var(--mc-inv-dark) var(--mc-inv-light);
+    box-shadow: 3px 3px 0 rgba(0,0,0,0.15);
+    margin-bottom: 0;
+}
+
+.mc-widget__header {
+    font-family: var(--font-pixel);
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--mc-text-light);
+    text-shadow: 1px 1px 0 var(--mc-text-shadow);
+    padding: 8px 12px;
+    background: var(--mc-stone);
+    border-bottom: 2px solid var(--mc-inv-dark);
+    /* Beveled look */
+    box-shadow: inset 0 1px 0 var(--mc-stone-light);
+}
+
+.mc-widget__body {
+    padding: 8px 10px;
+    font-size: 0.88rem;
+}
+
+/* Widget Nav Links */
+.mc-widget-nav {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.mc-widget-nav__item {
+    margin-bottom: 2px;
+}
+
+.mc-widget-nav__link {
+    display: block;
+    padding: 5px 8px;
+    font-family: var(--font-pixel);
+    font-size: 0.65rem;
+    color: var(--mc-text-light);
+    text-shadow: 1px 1px 0 var(--mc-text-shadow);
+    text-decoration: none;
+    background: var(--mc-inv-slot);
+    border: 2px solid;
+    border-color: var(--mc-stone-light) var(--mc-stone-dark) var(--mc-stone-dark) var(--mc-stone-light);
+    transition: all 0.1s;
+}
+
+.mc-widget-nav__link:hover {
+    background: var(--mc-stone-light);
+    color: var(--mc-gold);
+    text-decoration: none;
+}
+
+.mc-widget-nav__item--active > .mc-widget-nav__link {
+    background: var(--mc-grass-dark);
+    border-color: var(--mc-grass-light) var(--mc-grass-dark) var(--mc-grass-dark) var(--mc-grass-light);
+    color: var(--mc-inv-light);
+}
+
+/* Submenu — collapsed by default, opens on hover */
+.mc-widget-nav__sub {
+    list-style: none;
+    margin: 2px 0 2px 10px;
+    padding: 0;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.3s ease, opacity 0.3s ease;
+}
+
+/* Show submenu on hover */
+.mc-widget-nav__item:hover > .mc-widget-nav__sub,
+.mc-widget-nav > li:hover > .mc-widget-nav__sub {
+    max-height: 500px;
+    opacity: 1;
+}
+
+/* Always show submenu for active parent */
+.mc-widget-nav__item--active > .mc-widget-nav__sub,
+li:has(> .mc-widget-nav__sub .mc-widget-nav__item--active) > .mc-widget-nav__sub {
+    max-height: 500px;
+    opacity: 1;
+}
+
+/* Arrow indicator */
+.mc-widget-nav__item--has-children > .mc-widget-nav__link {
+    position: relative;
+    padding-right: 24px;
+}
+
+.mc-widget-nav__item--has-children > .mc-widget-nav__link::after {
+    content: '\25B6';
+    position: absolute;
+    right: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.5rem;
+    transition: transform 0.2s;
+}
+
+.mc-widget-nav__item--has-children:hover > .mc-widget-nav__link::after,
+.mc-widget-nav__item--has-children.is-expanded > .mc-widget-nav__link::after {
+    transform: translateY(-50%) rotate(90deg);
+}
+
+.mc-widget-nav__item--child .mc-widget-nav__link {
+    font-size: 0.6rem;
+    padding: 3px 6px;
+    background: var(--mc-stone-dark);
+}
+
+/* ===== CONTENT PANEL ===== */
+.mc-content__panel {
+    background: var(--mc-inv-bg);
+    border: 3px solid;
+    border-color: var(--mc-inv-light) var(--mc-inv-dark) var(--mc-inv-dark) var(--mc-inv-light);
+    box-shadow: 3px 3px 0 rgba(0,0,0,0.15);
+    padding: 20px;
+    min-height: 400px;
+}
+
+@media (min-width: 768px) {
+    .mc-content__panel { padding: 28px; }
+}
+
+@media (min-width: 1200px) {
+    .mc-content__panel { padding: 32px; }
+}
+
+.mc-content__inner {
+    position: relative;
+}
+
+/* ===== BREADCRUMB ===== */
+.breadcrumb {
+    background: var(--mc-inv-slot);
+    border: 2px solid;
+    border-color: var(--mc-stone-dark) var(--mc-stone-light) var(--mc-stone-light) var(--mc-stone-dark);
+    padding: 6px 12px;
+    margin-bottom: 16px;
+    font-family: var(--font-pixel);
+    font-size: 0.62rem;
+}
+
+.breadcrumb-item a {
+    color: var(--mc-grass-dark);
+}
+
+.breadcrumb-item.active {
+    color: var(--mc-stone-dark);
+}
+
+/* ===== FOOTER ===== */
+.mc-footer {
+    position: relative;
+    margin-top: 30px;
+}
+
+.mc-footer__ground {
+    position: relative;
+    height: 28px;
+}
+
+.mc-footer__stone {
+    background: var(--mc-stone-dark);
+    background-image:
+            repeating-linear-gradient(
+                    90deg,
+                    var(--mc-stone-dark) 0px,
+                    var(--mc-stone-dark) 12px,
+                    var(--mc-stone) 12px,
+                    var(--mc-stone) 16px,
+                    var(--mc-stone-dark) 16px,
+                    var(--mc-stone-dark) 32px
+            );
+    padding: 24px 0;
+    border-top: 3px solid var(--mc-stone);
+}
+
+.mc-footer__content {
+    text-align: center;
+}
+
+.mc-footer__links {
+    font-family: var(--font-pixel);
+    font-size: 0.65rem;
+    margin-bottom: 10px;
+}
+
+.mc-footer__links a {
+    color: var(--mc-text-light);
+    text-shadow: 1px 1px 0 #000;
+    padding: 4px 8px;
+}
+
+.mc-footer__links a:hover {
+    color: var(--mc-gold);
+    text-decoration: none;
+}
+
+.mc-footer__sep {
+    color: var(--mc-stone);
+    font-size: 0.5rem;
+    vertical-align: middle;
+}
+
+.mc-footer__copyright {
+    font-family: var(--font-pixel);
+    font-size: 0.55rem;
+    color: var(--mc-stone-light);
+    text-shadow: 1px 1px 0 #000;
+}
+
+.mc-footer__copyright a {
+    color: var(--mc-gold);
+}
+
+/* ===== BOOTSTRAP OVERRIDES ===== */
+.btn {
+    text-decoration: none !important;
+    font-family: var(--font-pixel);
+    font-size: 0.7rem;
+    font-weight: 700;
+    border: 2px solid;
+    text-shadow: 1px 1px 0 var(--mc-text-shadow);
+}
+
+.btn-primary,
+.bg-primary {
+    background-color: var(--mc-grass) !important;
+    border-color: var(--mc-grass-light) var(--mc-grass-dark) var(--mc-grass-dark) var(--mc-grass-light) !important;
+    color: #fff !important;
+}
+
+.btn-primary:hover {
+    background-color: var(--mc-grass-light) !important;
+}
+
+.border-primary {
+    border-color: var(--mc-grass) !important;
+}
+
+.card {
+    background: transparent;
+    border: none;
+    margin-bottom: 16px;
+}
+
+.card-body {
+    padding: 0;
+}
+
+/* Forms — inventory slot style */
+.form-control {
+    background: var(--mc-inv-slot);
+    border: 2px solid;
+    border-color: var(--mc-stone-dark) var(--mc-stone-light) var(--mc-stone-light) var(--mc-stone-dark);
+    color: var(--mc-text);
+    font-family: var(--font-body);
+}
+
+.form-control:focus {
+    background: var(--mc-inv-light);
+    border-color: var(--mc-emerald);
+    box-shadow: 0 0 0 2px rgba(23, 221, 98, 0.3);
+}
+
+/* Tables */
+.table {
+    color: var(--mc-text);
+}
+
+.table thead th {
+    font-family: var(--font-pixel);
+    font-size: 0.65rem;
+    background: var(--mc-stone);
+    color: var(--mc-text-light);
+    text-shadow: 1px 1px 0 #000;
+    border-color: var(--mc-stone-dark);
+}
+
+.table td {
+    border-color: var(--mc-inv-dark);
+}
+
+/* Pagination */
+.page-link {
+    background: var(--mc-stone);
+    border: 2px solid;
+    border-color: var(--mc-stone-light) var(--mc-stone-dark) var(--mc-stone-dark) var(--mc-stone-light);
+    color: var(--mc-text-light);
+    font-family: var(--font-pixel);
+    font-size: 0.65rem;
+    text-shadow: 1px 1px 0 #000;
+}
+
+.page-link:hover {
+    background: var(--mc-stone-light);
+    color: var(--mc-gold);
+}
+
+.page-item.active .page-link {
+    background: var(--mc-grass);
+    border-color: var(--mc-grass-light) var(--mc-grass-dark) var(--mc-grass-dark) var(--mc-grass-light);
+    color: #fff;
+}
+
+/* Alerts */
+.alert {
+    font-family: var(--font-body);
+    border-width: 2px;
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.mc-widget {
+    animation: fadeInUp 0.4s ease-out both;
+}
+
+.mc-sidebar--left .mc-widget:nth-child(1) { animation-delay: 0.1s; }
+.mc-sidebar--left .mc-widget:nth-child(2) { animation-delay: 0.2s; }
+.mc-sidebar--left .mc-widget:nth-child(3) { animation-delay: 0.3s; }
+
+.mc-sidebar--right .mc-widget:nth-child(1) { animation-delay: 0.15s; }
+.mc-sidebar--right .mc-widget:nth-child(2) { animation-delay: 0.25s; }
+.mc-sidebar--right .mc-widget:nth-child(3) { animation-delay: 0.35s; }
+
+/* ===== UTILITY ===== */
+.text-emerald  { color: var(--mc-emerald) !important; }
+.text-diamond  { color: var(--mc-diamond) !important; }
+.text-gold     { color: var(--mc-gold) !important; }
+.text-redstone { color: var(--mc-redstone) !important; }
