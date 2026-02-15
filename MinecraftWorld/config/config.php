@@ -29,7 +29,7 @@ class Config extends \Ilch\Config\Install
             ],
             'heroimage' => [
                 'type' => 'mediaselection',
-                'default' => 'application/layouts/MinecraftWorld/assets/img/hero.jpg',
+                'default' => 'application/layouts/MinecraftWorld/assets/img/hero.png',
                 'description' => 'img',
             ],
         ],
