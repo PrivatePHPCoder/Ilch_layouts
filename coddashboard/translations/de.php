@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @copyright Ilch 2
  * @package ilch
@@ -12,7 +13,6 @@ return [
 
     'togglenavigation' => 'Navigation umschalten',
     'navigation' => 'Navigation',
-    'operationscenter' => 'Operations Center',
 
     'home' => 'Home',
     'contact' => 'Kontakt',

@@ -1,14 +1,15 @@
-<?php /** @var $this \Ilch\Layout\Frontend */ ?><!DOCTYPE html>
-<html lang="de">
+<?php
+
+/** @var $this \Ilch\Layout\Frontend */
+?>
+<!DOCTYPE html>
+<html lang="<?=substr($this->getTranslator()->getLocale(), 0, 2) ?>">
 <head>
-    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <?=$this->getHeader() ?>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Teko:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <link href="<?=$this->getLayoutUrl('assets/css/style.css') ?>" rel="stylesheet">
     <?=$this->getCustomCSS() ?>
+    <script src="<?=$this->getVendorUrl('twbs/bootstrap/dist/js/bootstrap.bundle.min.js') ?>"></script>
 </head>
 <body>
 
@@ -34,7 +35,7 @@
     <div class="cod-header__inner">
         <span class="cod-header__callsign"><?=$this->getLayoutSetting('headertext') ?></span>
         <div class="cod-header__center">
-            <span class="cod-header__subtitle" data-glitch="<?=$this->getLayoutSetting('headersubtext') ?>">
+            <span class="cod-header__subtitle" data-glitch="<?=$this->escape($this->getLayoutSetting('headersubtext')) ?>">
                 <?=$this->getLayoutSetting('headersubtext') ?>
             </span>
         </div>
@@ -70,7 +71,8 @@
                     '<div class="cod-sidebar__group">
                         <div class="cod-sidebar__group-label">%s</div>
                         %c
-                    </div>', [
+                    </div>',
+                    [
                         'menus' => [
                             'ul-class-root'   => 'cod-sidebar__list',
                             'ul-class-child'  => 'cod-sidebar__sublist',
@@ -90,7 +92,8 @@
 
             <!-- Sidebar Footer -->
             <div class="cod-sidebar__footer">
-                <div class="cod-sidebar__version">v1.0</div>
+                <?php $layoutConfig = new \Layouts\CodDashboard\Config\Config($this->getTranslator()); ?>
+                <div class="cod-sidebar__version">v<?=$this->escape($layoutConfig->config['version']) ?></div>
             </div>
         </div>
     </nav>
@@ -129,7 +132,8 @@
                         <span class="cod-widget__header-text">%s</span>
                     </div>
                     <div class="cod-widget__body">%c</div>
-                </div>', [
+                </div>',
+                [
                     'menus' => [
                         'ul-class-root'   => 'cod-widget-nav',
                         'ul-class-child'  => 'cod-widget-nav__sub',
@@ -154,11 +158,11 @@
                 <div class="cod-footer__links">
                     <a href="<?=$this->getUrl() ?>"><?=$this->getTrans('home') ?></a>
                     <span class="cod-footer__sep">//</span>
-                    <a href="<?=$this->getUrl(['module'=>'contact', 'controller'=>'index', 'action'=>'index']) ?>"><?=$this->getTrans('contact') ?></a>
+                    <a href="<?=$this->getUrl(['module' => 'contact', 'controller' => 'index', 'action' => 'index']) ?>"><?=$this->getTrans('contact') ?></a>
                     <span class="cod-footer__sep">//</span>
-                    <a href="<?=$this->getUrl(['module'=>'imprint', 'controller'=>'index', 'action'=>'index']) ?>"><?=$this->getTrans('imprint') ?></a>
+                    <a href="<?=$this->getUrl(['module' => 'imprint', 'controller' => 'index', 'action' => 'index']) ?>"><?=$this->getTrans('imprint') ?></a>
                     <span class="cod-footer__sep">//</span>
-                    <a href="<?=$this->getUrl(['module'=>'privacy', 'controller'=>'index', 'action'=>'index']) ?>"><?=$this->getTrans('privacy') ?></a>
+                    <a href="<?=$this->getUrl(['module' => 'privacy', 'controller' => 'index', 'action' => 'index']) ?>"><?=$this->getTrans('privacy') ?></a>
                 </div>
                 <div class="cod-footer__copyright">
                     &copy; <?=date('Y') ?> <?=$this->getLayoutSetting('headertext') ?> | CMS by <a href="https://www.ilch.de/">Ilch</a>
@@ -179,5 +183,6 @@
 </div>
 
 <script src="<?=$this->getLayoutUrl('assets/js/main.js') ?>"></script>
+<?=$this->getFooter() ?>
 </body>
 </html>

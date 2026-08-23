@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @copyright Ilch 2
  * @package ilch
@@ -13,8 +14,15 @@ class Config extends \Ilch\Config\Install
         'version' => '1.0.0',
         'ilchCore' => '2.2.0',
         'author' => 'PrivatePHPCoder',
-        'link' => 'https://ilch.de',
+        'link' => 'https://github.com/PrivatePHPCoder/Ilch_layouts',
         'desc' => 'Minecraft inspiriertes Layout - Drei Spalten, Pixel-Stil, Crafting-UI Elemente',
+        'layouts' => [
+            'index_full' => [
+                ['module' => 'user', 'controller' => 'panel'],
+                ['module' => 'forum'],
+                ['module' => 'guestbook'],
+            ]
+        ],
 
         'settings' => [
             'headertext' => [
@@ -29,7 +37,7 @@ class Config extends \Ilch\Config\Install
             ],
             'heroimage' => [
                 'type' => 'mediaselection',
-                'default' => 'application/layouts/MinecraftWorld/assets/img/hero.png',
+                'default' => 'application/layouts/minecraftworld/assets/img/hero.jpg',
                 'description' => 'img',
             ],
         ],

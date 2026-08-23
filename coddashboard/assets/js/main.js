@@ -71,19 +71,4 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }, 4000);
     }
-
-    /* ===== INTERSECTION OBSERVER FOR WIDGETS ===== */
-    if ('IntersectionObserver' in window) {
-        var observer = new IntersectionObserver(function (entries) {
-            entries.forEach(function (entry) {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('is-visible');
-                }
-            });
-        }, {threshold: 0.1});
-
-        document.querySelectorAll('.cod-widget').forEach(function (el) {
-            observer.observe(el);
-        });
-    }
 });

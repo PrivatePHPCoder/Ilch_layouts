@@ -1,14 +1,15 @@
-<?php /** @var $this \Ilch\Layout\Frontend */ ?><!DOCTYPE html>
-<html lang="de">
+<?php
+
+/** @var $this \Ilch\Layout\Frontend */
+?>
+<!DOCTYPE html>
+<html lang="<?=substr($this->getTranslator()->getLocale(), 0, 2) ?>">
 <head>
-    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <?=$this->getHeader() ?>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
     <link href="<?=$this->getLayoutUrl('assets/css/style.css') ?>" rel="stylesheet">
     <?=$this->getCustomCSS() ?>
+    <script src="<?=$this->getVendorUrl('twbs/bootstrap/dist/js/bootstrap.bundle.min.js') ?>"></script>
 
 </head>
 <body>
@@ -16,11 +17,12 @@
 <!-- ===== FLOATING WIDGETS (Left) ===== -->
 <aside class="floating-widgets floating-widgets--left" id="floatingWidgetsLeft">
     <?=$this->getMenu(
-            1,
-            '<div class="fw-widget">
+        1,
+        '<div class="fw-widget">
                 <div class="fw-widget__header">%s</div>
                 <div class="fw-widget__body">%c</div>
-            </div>', [
+            </div>',
+        [
                     'menus' => [
                             'ul-class-root'   => 'fw-nav',
                             'ul-class-child'  => 'fw-nav__sub',
@@ -41,11 +43,12 @@
 <!-- ===== FLOATING WIDGETS (Right) ===== -->
 <aside class="floating-widgets floating-widgets--right" id="floatingWidgetsRight">
     <?=$this->getMenu(
-            2,
-            '<div class="fw-widget">
+        2,
+        '<div class="fw-widget">
                 <div class="fw-widget__header">%s</div>
                 <div class="fw-widget__body">%c</div>
-            </div>', [
+            </div>',
+        [
                     'menus' => [
                             'ul-class-root'   => 'fw-nav',
                             'ul-class-child'  => 'fw-nav__sub',
@@ -82,11 +85,12 @@
         <div class="wow-nav__ornament wow-nav__ornament--left"></div>
         <div class="wow-nav__links">
             <?=$this->getMenu(
-                    1,
-                    '<div class="wow-nav__group">
+                1,
+                '<div class="wow-nav__group">
                         <span class="wow-nav__group-title">%s</span>
                         %c
-                    </div>', [
+                    </div>',
+                [
                             'menus' => [
                                     'ul-class-root'   => 'wow-nav__list',
                                     'ul-class-child'  => 'wow-nav__dropdown',
@@ -118,11 +122,12 @@
         <div class="collapse" id="mobileNav">
             <div class="wow-nav-mobile__menu">
                 <?=$this->getMenu(
-                        1,
-                        '<div class="wow-nav-mobile__group">
+                    1,
+                    '<div class="wow-nav-mobile__group">
                             <div class="wow-nav-mobile__group-title">%s</div>
                             %c
-                        </div>', [
+                        </div>',
+                    [
                                 'menus' => [
                                         'ul-class-root'   => 'wow-nav-mobile__list',
                                         'ul-class-child'  => 'wow-nav-mobile__sub',
@@ -146,7 +151,7 @@
 <!-- ===== HERO BANNER ===== -->
 <section class="wow-hero">
     <div class="wow-hero__overlay"></div>
-    <img class="wow-hero__image" src="<?=$this->getBaseUrl($this->getLayoutSetting('heroimage')) ?>" alt="<?=$this->getTrans('heroimage') ?>">
+    <img class="wow-hero__image" src="<?=$this->getBaseUrl($this->getLayoutSetting('heroimage')) ?>" alt="">
     <div class="wow-hero__content">
 
         <h1 class="wow-hero__title"><?=$this->getLayoutSetting('headertext') ?></h1>
@@ -181,11 +186,11 @@
             <div class="wow-footer__links">
                 <a href="<?=$this->getUrl() ?>"><?=$this->getTrans('home') ?></a>
                 <span class="wow-footer__separator">&#10022;</span>
-                <a href="<?=$this->getUrl(['module'=>'contact', 'controller'=>'index', 'action'=>'index']) ?>"><?=$this->getTrans('contact') ?></a>
+                <a href="<?=$this->getUrl(['module' => 'contact', 'controller' => 'index', 'action' => 'index']) ?>"><?=$this->getTrans('contact') ?></a>
                 <span class="wow-footer__separator">&#10022;</span>
-                <a href="<?=$this->getUrl(['module'=>'imprint', 'controller'=>'index', 'action'=>'index']) ?>"><?=$this->getTrans('imprint') ?></a>
+                <a href="<?=$this->getUrl(['module' => 'imprint', 'controller' => 'index', 'action' => 'index']) ?>"><?=$this->getTrans('imprint') ?></a>
                 <span class="wow-footer__separator">&#10022;</span>
-                <a href="<?=$this->getUrl(['module'=>'privacy', 'controller'=>'index', 'action'=>'index']) ?>"><?=$this->getTrans('privacy') ?></a>
+                <a href="<?=$this->getUrl(['module' => 'privacy', 'controller' => 'index', 'action' => 'index']) ?>"><?=$this->getTrans('privacy') ?></a>
             </div>
             <div class="wow-footer__copyright">
                 &copy; <?=date('Y') ?> <?=$this->getLayoutSetting('headertext') ?> | CMS by <a href="https://www.ilch.de/">Ilch</a>
@@ -195,5 +200,6 @@
 </footer>
 
 <script src="<?=$this->getLayoutUrl('assets/js/main.js') ?>"></script>
+<?=$this->getFooter() ?>
 </body>
 </html>

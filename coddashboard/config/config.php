@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @copyright Ilch 2
  * @package ilch
@@ -13,7 +14,7 @@ class Config extends \Ilch\Config\Install
         'version' => '1.0.0',
         'ilchCore' => '2.2.0',
         'author' => 'PrivatePHPCoder',
-        'link' => 'https://ilch.de',
+        'link' => 'https://github.com/PrivatePHPCoder/Ilch_layouts',
         'desc' => 'Call of Duty inspiriertes Dashboard Layout - Vertikale Icon-Navigation, HUD-Elemente, taktischer Stil',
 
         'settings' => [
@@ -29,7 +30,7 @@ class Config extends \Ilch\Config\Install
             ],
             'heroimage' => [
                 'type' => 'mediaselection',
-                'default' => 'application/layouts/CodDashboard/assets/img/header-bg.jpg',
+                'default' => 'application/layouts/coddashboard/assets/img/header-bg.jpg',
                 'description' => 'img',
             ],
         ],

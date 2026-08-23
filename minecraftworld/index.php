@@ -1,14 +1,15 @@
-<?php /** @var $this \Ilch\Layout\Frontend */ ?><!DOCTYPE html>
-<html lang="de">
+<?php
+
+/** @var $this \Ilch\Layout\Frontend */
+?>
+<!DOCTYPE html>
+<html lang="<?=substr($this->getTranslator()->getLocale(), 0, 2) ?>">
 <head>
-    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <?=$this->getHeader() ?>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link href="<?=$this->getLayoutUrl('assets/css/style.css') ?>" rel="stylesheet">
     <?=$this->getCustomCSS() ?>
+    <script src="<?=$this->getVendorUrl('twbs/bootstrap/dist/js/bootstrap.bundle.min.js') ?>"></script>
 </head>
 <body>
 
@@ -27,7 +28,8 @@
                     '<div class="mc-nav__group">
                         <span class="mc-nav__group-title">%s</span>
                         %c
-                    </div>', [
+                    </div>',
+                    [
                         'menus' => [
                             'ul-class-root'   => 'mc-nav__list',
                             'ul-class-child'  => 'mc-nav__dropdown',
@@ -65,7 +67,8 @@
                     '<div class="mc-nav-mobile__group">
                         <div class="mc-nav-mobile__group-title">%s</div>
                         %c
-                    </div>', [
+                    </div>',
+                    [
                         'menus' => [
                             'ul-class-root'   => 'mc-nav-mobile__list',
                             'ul-class-child'  => 'mc-nav-mobile__sub',
@@ -102,7 +105,7 @@
             <span class="mc-star" style="top:5%;left:55%"></span>
         </div>
     </div>
-    <img class="mc-hero__image" src="<?=$this->getBaseUrl($this->getLayoutSetting('heroimage')) ?>" alt="<?=$this->getTrans('heroimage') ?>">
+    <img class="mc-hero__image" src="<?=$this->getBaseUrl($this->getLayoutSetting('heroimage')) ?>" alt="">
     <div class="mc-hero__overlay"></div>
     <div class="mc-hero__content">
         <h1 class="mc-hero__title"><?=$this->getLayoutSetting('headertext') ?></h1>
@@ -127,7 +130,8 @@
                     '<div class="mc-widget">
                         <div class="mc-widget__header">%s</div>
                         <div class="mc-widget__body">%c</div>
-                    </div>', [
+                    </div>',
+                    [
                         'menus' => [
                             'ul-class-root'   => 'mc-widget-nav',
                             'ul-class-child'  => 'mc-widget-nav__sub',
@@ -162,7 +166,8 @@
                     '<div class="mc-widget">
                         <div class="mc-widget__header">%s</div>
                         <div class="mc-widget__body">%c</div>
-                    </div>', [
+                    </div>',
+                    [
                         'menus' => [
                             'ul-class-root'   => 'mc-widget-nav',
                             'ul-class-child'  => 'mc-widget-nav__sub',
@@ -196,11 +201,11 @@
                 <div class="mc-footer__links">
                     <a href="<?=$this->getUrl() ?>"><?=$this->getTrans('home') ?></a>
                     <span class="mc-footer__sep">⬥</span>
-                    <a href="<?=$this->getUrl(['module'=>'contact', 'controller'=>'index', 'action'=>'index']) ?>"><?=$this->getTrans('contact') ?></a>
+                    <a href="<?=$this->getUrl(['module' => 'contact', 'controller' => 'index', 'action' => 'index']) ?>"><?=$this->getTrans('contact') ?></a>
                     <span class="mc-footer__sep">⬥</span>
-                    <a href="<?=$this->getUrl(['module'=>'imprint', 'controller'=>'index', 'action'=>'index']) ?>"><?=$this->getTrans('imprint') ?></a>
+                    <a href="<?=$this->getUrl(['module' => 'imprint', 'controller' => 'index', 'action' => 'index']) ?>"><?=$this->getTrans('imprint') ?></a>
                     <span class="mc-footer__sep">⬥</span>
-                    <a href="<?=$this->getUrl(['module'=>'privacy', 'controller'=>'index', 'action'=>'index']) ?>"><?=$this->getTrans('privacy') ?></a>
+                    <a href="<?=$this->getUrl(['module' => 'privacy', 'controller' => 'index', 'action' => 'index']) ?>"><?=$this->getTrans('privacy') ?></a>
                 </div>
                 <div class="mc-footer__copyright">
                     &copy; <?=date('Y') ?> <?=$this->getLayoutSetting('headertext') ?> | CMS by <a href="https://www.ilch.de/">Ilch</a>
@@ -211,5 +216,6 @@
 </footer>
 
 <script src="<?=$this->getLayoutUrl('assets/js/main.js') ?>"></script>
+<?=$this->getFooter() ?>
 </body>
 </html>
