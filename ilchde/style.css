@@ -1,0 +1,1114 @@
+/*
+ * Ilch.de Layout
+ * Das Design von ilch.de, modern neu interpretiert: weißes Blatt auf hellem Grund, Logo-Karte,
+ * dunkles Navigationsband mit rotem Reiter, rote Brotkrumenleiste, Seitenboxen, dunkler Footer.
+ * Mit Hell-/Dunkel-/Auto-Modus. Bootstrap 5.3.
+ */
+
+/* ==========================================================================
+   1. Design-Tokens
+   ========================================================================== */
+:root {
+    /* Akzent (wird im <head> aus der Layout-Einstellung überschrieben) */
+    --il-accent: #cc0101;
+    --il-accent-rgb: 204, 1, 1;
+    --il-accent-600: color-mix(in srgb, var(--il-accent) 84%, #000);
+    --il-accent-700: color-mix(in srgb, var(--il-accent) 62%, #000);
+
+    /* Geometrie */
+    --il-wrap: 1680px;   /* nutzt die volle Breite bis 1680 px, erst darüber wird zentriert */
+    --il-pad: 24px;
+    --il-left: 208px;
+    --il-right: 208px;
+    --il-gap: 24px;
+    --il-top-h: 44px;
+    --il-nav-h: 58px;
+    --il-logo-h: 128px;
+    --il-logo-top: 12px;
+    --il-overhang: calc(var(--il-logo-top) + var(--il-logo-h) - var(--il-top-h) - var(--il-nav-h));
+    --il-radius: 12px;
+    --il-ease: cubic-bezier(.2, .7, .2, 1);
+
+    /* Schrift */
+    --il-font: "Segoe UI", system-ui, -apple-system, Roboto, Verdana, "Trebuchet MS", sans-serif;
+    --il-font-head: "Trebuchet MS", "Segoe UI", system-ui, sans-serif;
+}
+
+[data-bs-theme="light"] {
+    --il-bg: #efeff1;
+    --il-bg-top: #fbfbfb;
+    --il-surface: #fff;
+    --il-surface-2: #f6f6f7;
+    --il-ink: #3c3c3e;
+    --il-ink-strong: #1d1d1f;
+    --il-muted: #6f7273;
+    --il-line: #e2e2e5;
+    --il-dot: #cfcfd3;
+    --il-accent-text: var(--il-accent-600);
+    --il-accent-soft: color-mix(in srgb, var(--il-accent) 8%, #fff);
+    --il-sheet-shadow: 0 0 0 1px rgba(20, 20, 25, .05), 0 18px 50px -22px rgba(20, 20, 25, .35);
+    --il-shadow-sm: 0 1px 2px rgba(20, 20, 25, .05), 0 6px 16px -10px rgba(20, 20, 25, .14);
+    --il-shadow-lg: 0 22px 44px -14px rgba(20, 20, 25, .4);
+    --il-topbar: #fff;
+
+    /* Bootstrap-Variablen (inkl. der -rgb-Varianten, die z. B. .bg-body-tertiary und .text-body nutzen) */
+    --il-surface-rgb: 255, 255, 255;
+    --il-surface-2-rgb: 246, 246, 247;
+    --il-ink-rgb: 60, 60, 62;
+    --bs-body-bg: #fff;
+    --bs-body-bg-rgb: var(--il-surface-rgb);
+    --bs-body-color: var(--il-ink);
+    --bs-body-color-rgb: var(--il-ink-rgb);
+    --bs-secondary-bg: var(--il-surface-2);
+    --bs-secondary-bg-rgb: var(--il-surface-2-rgb);
+    --bs-tertiary-bg: var(--il-surface-2);
+    --bs-tertiary-bg-rgb: var(--il-surface-2-rgb);
+    --bs-border-color: var(--il-line);
+}
+
+[data-bs-theme="dark"] {
+    --il-bg: #0d0d0f;
+    --il-bg-top: #151517;
+    --il-surface: #1b1b1e;
+    --il-surface-2: #222226;
+    --il-ink: #cfd0d3;
+    --il-ink-strong: #f2f2f3;
+    --il-muted: #909296;
+    --il-line: #323237;
+    --il-dot: #3c3c42;
+    --il-accent-text: color-mix(in srgb, var(--il-accent) 62%, #fff);
+    --il-accent-soft: color-mix(in srgb, var(--il-accent) 16%, var(--il-surface));
+    --il-sheet-shadow: 0 0 0 1px rgba(255, 255, 255, .05), 0 18px 50px -22px rgba(0, 0, 0, .9);
+    --il-shadow-sm: 0 1px 2px rgba(0, 0, 0, .4), 0 6px 16px -10px rgba(0, 0, 0, .6);
+    --il-shadow-lg: 0 22px 44px -14px rgba(0, 0, 0, .8);
+    --il-topbar: #151517;
+
+    --bs-body-bg: var(--il-surface);
+    --bs-body-color: var(--il-ink);
+    --bs-border-color: var(--il-line);
+    --il-surface-rgb: 27, 27, 30;
+    --il-surface-2-rgb: 34, 34, 38;
+    --il-ink-rgb: 207, 208, 211;
+    --bs-body-bg-rgb: var(--il-surface-rgb);
+    --bs-body-color-rgb: var(--il-ink-rgb);
+    --bs-secondary-bg: var(--il-surface-2);
+    --bs-secondary-bg-rgb: var(--il-surface-2-rgb);
+    --bs-tertiary-bg: var(--il-surface-2);
+    --bs-tertiary-bg-rgb: var(--il-surface-2-rgb);
+    color-scheme: dark;
+}
+
+/* Bootstrap folgt der Akzentfarbe */
+:root,
+[data-bs-theme] {
+    --bs-primary: var(--il-accent);
+    --bs-primary-rgb: var(--il-accent-rgb);
+    --bs-link-color: var(--il-accent-text);
+    --bs-link-color-rgb: var(--il-accent-rgb);
+    --bs-link-hover-color: var(--il-accent-700);
+    --bs-border-radius: 8px;
+    --bs-border-radius-lg: var(--il-radius);
+    --bs-focus-ring-color: rgba(var(--il-accent-rgb), .25);
+}
+
+/* ==========================================================================
+   2. Grundlagen
+   ========================================================================== */
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 16px;
+}
+
+body {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    font-family: var(--il-font);
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--il-ink);
+    background: var(--il-bg) linear-gradient(180deg, var(--il-bg-top) 0, var(--il-bg) 420px) no-repeat;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+}
+
+/* Bilder: max-width/height macht bereits static/css/ilch.css des Kerns; hier bewusst nichts doppelt. */
+
+a {
+    color: var(--il-accent-text);
+    text-decoration: none;
+    transition: color .15s ease;
+}
+
+a:hover { color: var(--il-accent-700); }
+[data-bs-theme="dark"] a:hover { color: color-mix(in srgb, var(--il-accent) 40%, #fff); }
+
+::selection { background: rgba(var(--il-accent-rgb), .22); }
+
+/* Kein seitlicher Außenabstand: Das Blatt reicht bis zum Bildschirmrand (keine verschenkte Fläche) */
+.il-wrap {
+    width: 100%;
+    max-width: var(--il-wrap);
+    margin-inline: auto;
+    padding-inline: 0;
+}
+
+.il-skip {
+    position: absolute;
+    left: 12px;
+    top: -60px;
+    z-index: 2000;
+    padding: 8px 14px;
+    background: var(--il-accent);
+    color: #fff;
+    border-radius: 0 0 8px 8px;
+    transition: top .15s ease;
+}
+.il-skip:focus { top: 0; color: #fff; }
+
+/* ==========================================================================
+   3. Kopfbereich: Leiste, Logo-Karte, Hauptnavigation
+   ========================================================================== */
+.il-header { position: relative; z-index: 30; }
+
+.il-topbar {
+    height: var(--il-top-h);
+    background: var(--il-topbar);
+}
+
+.il-topbar-inner {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    padding-inline: var(--il-pad);
+}
+
+.il-iconbtn {
+    display: inline-grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    border: 1px solid var(--il-line);
+    border-radius: 999px;
+    background: var(--il-surface-2);
+    color: var(--il-ink-strong);
+    font-size: 13px;
+    cursor: pointer;
+    transition: border-color .15s ease, color .15s ease, box-shadow .15s ease;
+}
+
+.il-iconbtn:hover,
+.il-iconbtn[aria-expanded="true"] {
+    border-color: var(--il-accent);
+    color: var(--il-accent-text);
+    box-shadow: 0 0 0 3px rgba(var(--il-accent-rgb), .12);
+}
+
+.il-iconbtn:focus-visible { outline: 2px solid var(--il-accent); outline-offset: 2px; }
+
+[data-bs-theme="light"] .il-theme-icon-dark,
+[data-bs-theme="dark"] .il-theme-icon-light { display: none; }
+
+.il-dropdown {
+    --bs-dropdown-border-color: var(--il-line);
+    --bs-dropdown-border-radius: 12px;
+    --bs-dropdown-bg: var(--il-surface);
+    --bs-dropdown-link-hover-bg: rgba(var(--il-accent-rgb), .08);
+    --bs-dropdown-link-hover-color: var(--il-accent-text);
+    --bs-dropdown-link-active-bg: rgba(var(--il-accent-rgb), .12);
+    --bs-dropdown-link-active-color: var(--il-accent-text);
+    padding: .4rem;
+    font-size: 13px;
+    box-shadow: var(--il-shadow-lg);
+}
+
+.il-dropdown .dropdown-item { border-radius: 8px; padding: .45rem .75rem; }
+
+/* Dunkles Navigationsband */
+.il-navband {
+    position: relative;
+    height: var(--il-nav-h);
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, .09) 0, rgba(255, 255, 255, 0) 50%),
+        linear-gradient(180deg, #353538 0, #161617 100%);
+    border-bottom: 1px solid #000;
+    box-shadow: 0 8px 24px -14px rgba(0, 0, 0, .6);
+}
+
+.il-navwrap {
+    position: relative;
+    height: 100%;
+    display: flex;
+    align-items: stretch;
+}
+
+/* Logo-Karte: überlappt Leiste und Band, wie auf ilch.de */
+.il-logo {
+    position: absolute;
+    left: var(--il-pad);
+    top: calc(-1 * var(--il-top-h) + var(--il-logo-top));
+    z-index: 5;
+    width: var(--il-left);
+    height: var(--il-logo-h);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--il-surface);
+    border-radius: 14px;
+    box-shadow: 0 10px 28px -10px rgba(0, 0, 0, .45), 0 0 0 1px rgba(0, 0, 0, .06);
+    transition: transform .25s var(--il-ease), box-shadow .25s var(--il-ease);
+}
+
+.il-logo:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 32px -10px rgba(0, 0, 0, .5), 0 0 0 1px rgba(0, 0, 0, .06);
+}
+
+.il-logo img { max-width: 84%; max-height: 84%; object-fit: contain; }
+[data-bs-theme="dark"] .il-logo { background: #f3f3f4; }
+
+.il-mainnav {
+    flex: 1;
+    min-width: 0;
+    margin-left: calc(var(--il-pad) + var(--il-left) + var(--il-gap) - 20px);
+}
+
+/* Auf dem Desktop immer sichtbar (Bootstrap-.collapse gilt nur für das mobile Menü) */
+@media (min-width: 992px) {
+    .il-mainnav.collapse:not(.show) { display: block; }
+}
+
+.il-nav {
+    display: flex;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.il-nav-item { position: relative; }
+
+.il-nav-item > a {
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding: 0 20px;
+    color: #fff;
+    font: 700 13px/1 var(--il-font);
+    letter-spacing: .01em;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, .8);
+    white-space: nowrap;
+    transition: background .2s ease;
+}
+
+/* Gepunktete Trenner zwischen den Punkten (ilch.de) */
+.il-nav > .il-nav-item + .il-nav-item > a::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 19px;
+    bottom: 19px;
+    border-left: 1px dotted rgba(255, 255, 255, .28);
+}
+
+/* Roter Reiter bei Hover / aktiv */
+.il-nav > .il-nav-item > a:hover,
+.il-nav > .il-nav-item.is-active > a,
+.il-nav > .il-nav-item:hover > a,
+.il-nav > .il-nav-item:focus-within > a {
+    color: #fff;
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, .22) 0, rgba(255, 255, 255, 0) 55%),
+        linear-gradient(180deg, var(--il-accent) 0, var(--il-accent-700) 100%);
+    box-shadow: inset 0 -3px 0 rgba(0, 0, 0, .25);
+}
+
+.il-nav > .il-nav-item > a:hover::before,
+.il-nav > .il-nav-item.is-active > a::before,
+.il-nav > .il-nav-item:hover > a::before,
+.il-nav > .il-nav-item:hover + .il-nav-item > a::before,
+.il-nav > .il-nav-item.is-active + .il-nav-item > a::before { opacity: 0; }
+
+/* Untermenü */
+.il-nav-item.has-sub > a::after {
+    content: "";
+    width: 5px;
+    height: 5px;
+    margin: -2px 0 0 9px;
+    border-right: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    transform: rotate(45deg);
+    opacity: .75;
+    transition: transform .2s ease;
+}
+
+.il-nav-item.has-sub:hover > a::after,
+.il-nav-item.has-sub:focus-within > a::after,
+.il-nav-item.has-sub.is-open > a::after { transform: rotate(225deg); margin-top: 2px; }
+
+.il-nav-sub {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 40;
+    min-width: 220px;
+    margin: 0;
+    padding: 6px;
+    list-style: none;
+    background: #1a1a1c;
+    border: 1px solid rgba(255, 255, 255, .08);
+    border-top: 0;
+    border-radius: 0 0 var(--il-radius) var(--il-radius);
+    box-shadow: 0 18px 32px -12px rgba(0, 0, 0, .7);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(6px);
+    transition: opacity .18s ease, transform .18s ease, visibility .18s;
+}
+
+.il-nav-item.has-sub:hover > .il-nav-sub,
+.il-nav-item.has-sub:focus-within > .il-nav-sub,
+.il-nav-item.has-sub.is-open > .il-nav-sub {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+}
+
+.il-nav-sub .il-nav-item > a {
+    height: auto;
+    padding: 9px 12px;
+    border-radius: 8px;
+    font-weight: 600;
+    text-shadow: none;
+}
+
+.il-nav-sub .il-nav-item > a:hover,
+.il-nav-sub .il-nav-item.is-active > a {
+    background: var(--il-accent);
+    box-shadow: none;
+}
+
+.il-nav-sub .il-nav-sub { display: none; }
+
+/* Anmelden / Benutzer: Dropdown am rechten Ende des Bandes (wie bei ilch.de) */
+.il-user { display: flex; align-items: stretch; margin-left: auto; }
+
+.il-userbtn {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    height: 100%;
+    padding: 0 16px;
+    border: 0;
+    background: transparent;
+    color: #fff;
+    font: 700 12.5px/1 var(--il-font);
+    text-shadow: 0 1px 0 rgba(0, 0, 0, .8);
+    cursor: pointer;
+    transition: background .2s ease;
+}
+
+.il-userbtn::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 19px;
+    bottom: 19px;
+    border-left: 1px dotted rgba(255, 255, 255, .28);
+}
+
+.il-userbtn:hover,
+.il-userbtn[aria-expanded="true"] {
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, .18) 0, rgba(255, 255, 255, 0) 55%),
+        linear-gradient(180deg, var(--il-accent) 0, var(--il-accent-700) 100%);
+    box-shadow: inset 0 -3px 0 rgba(0, 0, 0, .25);
+}
+
+.il-userbtn:focus-visible { outline: 2px solid #fff; outline-offset: -4px; }
+
+.il-caret {
+    width: 5px;
+    height: 5px;
+    margin-top: -2px;
+    border-right: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    transform: rotate(45deg);
+    opacity: .75;
+    transition: transform .2s ease;
+}
+
+.il-userbtn[aria-expanded="true"] .il-caret { transform: rotate(225deg); margin-top: 2px; }
+
+.il-usermenu {
+    --bs-dropdown-spacer: 0;
+    width: 300px;
+    padding: 18px;
+    margin-top: 0 !important;
+    color: #d6d7da;
+    background: #1d1d1f;
+    border: 1px solid rgba(255, 255, 255, .08);
+    border-top: 0;
+    border-radius: 0 0 var(--il-radius) var(--il-radius);
+    box-shadow: 0 22px 40px -14px rgba(0, 0, 0, .75);
+    font-size: 13px;
+}
+
+.il-usermenu a { color: #ff8a8a; font-weight: 600; }
+.il-usermenu a:hover { color: #fff; }
+
+.il-usermenu button[name="login"] {
+    background: linear-gradient(180deg, var(--il-accent), var(--il-accent-700));
+    border-color: var(--il-accent-700);
+    color: #fff;
+    font-weight: 700;
+}
+.il-usermenu button[name="login"]:hover { filter: brightness(1.12); }
+
+.il-burger { display: none; }
+
+/* ==========================================================================
+   4. Blatt: Brotkrumenleiste, linke / mittlere / rechte Spalte
+   ========================================================================== */
+.il-stage {
+    flex: 1 0 auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.il-stage > .il-wrap {
+    flex: 1 0 auto;
+    display: flex;
+}
+
+/* Das weiße "Blatt" von ilch.de */
+.il-sheet {
+    flex: 1;
+    min-width: 0;
+    padding: 0 var(--il-pad) 40px;
+    background: var(--il-surface);
+    box-shadow: var(--il-sheet-shadow);
+}
+
+.il-grid {
+    display: grid;
+    column-gap: var(--il-gap);
+    row-gap: 0;
+    align-items: start;
+    grid-template-columns: var(--il-left) minmax(0, 1fr) var(--il-right);
+    grid-template-areas:
+        "left crumb crumb"
+        "left main  right";
+}
+
+.il-layout-2col .il-grid,
+.il-layout-full .il-grid {
+    grid-template-columns: var(--il-left) minmax(0, 1fr);
+    grid-template-areas:
+        "left crumb"
+        "left main";
+}
+
+.il-crumb { grid-area: crumb; }
+.il-main { grid-area: main; min-width: 0; padding-top: 26px; }
+.il-side-left { grid-area: left; padding-top: calc(var(--il-overhang) + 22px); }
+.il-side-right { grid-area: right; padding-top: 26px; }
+
+/* Rote Brotkrumenleiste, bündig bis zum Blattrand (wie ilch.de) */
+.il-crumb {
+    display: flex;
+    align-items: center;
+    position: relative;
+    z-index: 20;
+    min-height: 34px;
+    margin-right: calc(-1 * var(--il-pad));
+    padding: 0 0 0 20px;
+    color: #fff;
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, .2) 0, rgba(255, 255, 255, 0) 55%),
+        linear-gradient(180deg, var(--il-accent) 0, var(--il-accent-700) 100%);
+    border-radius: 0 0 0 var(--il-radius);
+    box-shadow: 0 10px 20px -14px rgba(var(--il-accent-rgb), .9);
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.il-crumb-path { flex: 1; min-width: 0; padding: 6px 20px 6px 0; }
+
+/* Pfeil-Reiter am rechten Ende der Leiste: klappt das Leistenmenü (Menü 3) auf, wie bei ilch.de */
+.il-crumb-toggle {
+    position: relative;
+    align-self: stretch;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    padding: 0;
+    color: #fff;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    transition: background .2s ease;
+}
+
+.il-crumb-toggle::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 8px;
+    bottom: 8px;
+    border-left: 1px dotted rgba(255, 255, 255, .45);
+}
+
+.il-crumb-toggle:hover,
+.il-crumb-toggle.is-open { background: rgba(0, 0, 0, .2); }
+.il-crumb-toggle:focus-visible { outline: 2px solid #fff; outline-offset: -3px; }
+.il-crumb-toggle .il-caret { margin-top: -2px; }
+.il-crumb-toggle.is-open .il-caret { transform: rotate(225deg); margin-top: 2px; }
+
+.il-submenu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    z-index: 25;
+    max-width: 100%;
+    padding: 9px 18px;
+    color: #fff;
+    background: linear-gradient(180deg, var(--il-accent-700) 0, color-mix(in srgb, var(--il-accent) 48%, #000) 100%);
+    border-radius: 0 0 0 var(--il-radius);
+    box-shadow: 0 16px 28px -12px rgba(0, 0, 0, .55);
+    font-size: 12px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-6px);
+    transition: opacity .2s ease, transform .2s ease, visibility .2s;
+}
+
+.il-submenu.is-open { opacity: 1; visibility: visible; transform: none; }
+
+.il-submenu-list {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.il-submenu-list li + li::before {
+    content: "|";
+    margin: 0 .7em;
+    opacity: .5;
+}
+
+.il-submenu-list a { color: #fff; font-weight: 600; opacity: .95; }
+.il-submenu-list li.is-active > a { text-decoration: underline; text-underline-offset: 4px; }
+
+.il-crumb .breadcrumb {
+    --bs-breadcrumb-divider: "\203A";
+    --bs-breadcrumb-divider-color: rgba(255, 255, 255, .65);
+    --bs-breadcrumb-item-padding-x: .55rem;
+    --bs-breadcrumb-item-active-color: #fff;
+    margin: 0;
+    padding: 0;
+    flex-wrap: wrap;
+}
+
+.il-crumb a { color: #fff; opacity: .92; }
+.il-crumb a:hover { color: #fff; opacity: 1; text-decoration: underline; }
+.il-crumb .breadcrumb-item,
+.il-crumb .breadcrumb-item.active { color: #fff; }
+
+/* kleiner Pfeil vor dem ersten Eintrag (ilch.de) */
+.il-crumb .breadcrumb-item:first-child a::before {
+    content: "";
+    display: inline-block;
+    margin-right: 8px;
+    border-left: 5px solid #fff;
+    border-top: 4px solid transparent;
+    border-bottom: 4px solid transparent;
+}
+
+/* ==========================================================================
+   5. Inhalt
+   Bewusst schlank: Es werden vor allem Bootstrap-Variablen gesetzt (Akzentfarbe, Farbschema),
+   statt Komponenten per Selektor umzubauen. Das hält die Fehleranfälligkeit gering und
+   funktioniert in Modulen, Seitenboxen und Modals gleichermaßen.
+   ========================================================================== */
+.il-content { overflow-wrap: break-word; }
+.il-content > :first-child { margin-top: 0; }
+.il-content > :last-child { margin-bottom: 0; }
+
+/* Überschriften: nur Schrift (niedrige Spezifität). Die Textfarbe wird bewusst NICHT gesetzt, damit
+   Überschriften in farbigen Kopfzeilen (bg-primary, Alerts, text-white ...) lesbar bleiben. */
+.il-content :where(h1, h2, h3, h4, h5, h6) {
+    font-family: var(--il-font-head);
+    line-height: 1.25;
+    font-weight: 700;
+}
+
+.il-content :where(h2) { font-size: 1.4rem; }
+.il-content :where(h3) { font-size: 1.2rem; }
+.il-content :where(h4) { font-size: 1.05rem; }
+
+/* Seitenüberschrift: rot mit kurzer Akzentlinie (ilch.de) */
+.il-content h1 {
+    position: relative;
+    margin-bottom: 1.1rem;
+    padding-bottom: .7rem;
+    font-size: 1.7rem;
+    color: var(--il-accent-text);
+    border-bottom: 1px solid var(--il-line);
+}
+
+.il-content h1::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -1px;
+    width: 64px;
+    height: 3px;
+    border-radius: 3px;
+    background: var(--il-accent);
+}
+
+.il-content hr { border-color: var(--il-line); opacity: 1; }
+
+/* Redaktionelle Inhalte (CKEditor 5: Artikel, Seiten, Beiträge): Farben folgen dem Farbschema */
+.il-content .ck-content {
+    color: inherit;
+    background: transparent;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+}
+
+.il-content .ck-content a {
+    text-decoration: underline;
+    text-decoration-color: rgba(var(--il-accent-rgb), .35);
+    text-underline-offset: 3px;
+}
+
+.il-content .ck-content a:hover { text-decoration-color: currentColor; }
+.il-content .ck-content :where(h2) { margin-top: 1.6rem; }
+.il-content .ck-content pre { color: inherit; background: var(--il-surface-2); }
+.il-content .ck-content blockquote { border-left-color: var(--il-accent); }
+.il-content .ck-content table,
+.il-content .ck-content table td,
+.il-content .ck-content table th { border-color: var(--il-line); }
+.il-content .ck-content table th { background: var(--il-surface-2); }
+
+/* Bootstrap-Komponenten: Akzentfarbe über deren eigene Variablen (überall, nicht nur im Inhalt) */
+.btn { font-weight: 600; }
+
+.btn-primary {
+    --bs-btn-color: #fff;
+    --bs-btn-bg: var(--il-accent);
+    --bs-btn-border-color: var(--il-accent);
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: var(--il-accent-600);
+    --bs-btn-hover-border-color: var(--il-accent-600);
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: var(--il-accent-700);
+    --bs-btn-active-border-color: var(--il-accent-700);
+    --bs-btn-disabled-bg: var(--il-accent);
+    --bs-btn-disabled-border-color: var(--il-accent);
+    --bs-btn-focus-shadow-rgb: var(--il-accent-rgb);
+}
+
+.btn-outline-primary {
+    --bs-btn-color: var(--il-accent-text);
+    --bs-btn-border-color: var(--il-accent);
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: var(--il-accent);
+    --bs-btn-hover-border-color: var(--il-accent);
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: var(--il-accent-700);
+    --bs-btn-active-border-color: var(--il-accent-700);
+    --bs-btn-focus-shadow-rgb: var(--il-accent-rgb);
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--il-accent);
+    box-shadow: 0 0 0 .22rem rgba(var(--il-accent-rgb), .18);
+}
+
+.form-check-input:checked { background-color: var(--il-accent); border-color: var(--il-accent); }
+.form-check-input:focus { border-color: var(--il-accent); box-shadow: 0 0 0 .22rem rgba(var(--il-accent-rgb), .18); }
+
+.pagination {
+    --bs-pagination-active-bg: var(--il-accent);
+    --bs-pagination-active-border-color: var(--il-accent);
+    --bs-pagination-color: var(--il-accent-text);
+    --bs-pagination-hover-color: var(--il-accent-700);
+    --bs-pagination-focus-color: var(--il-accent-700);
+    --bs-pagination-focus-box-shadow: 0 0 0 .22rem rgba(var(--il-accent-rgb), .18);
+}
+
+/* Bootstrap 5.3 liefert für .btn-outline-secondary im Dunkelmodus nur 3,7:1 Kontrast - hier angehoben */
+[data-bs-theme="dark"] .btn-outline-secondary {
+    --bs-btn-color: #b4bac0;
+    --bs-btn-border-color: #6c757d;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: #6c757d;
+    --bs-btn-hover-border-color: #6c757d;
+}
+
+.nav-tabs { --bs-nav-tabs-link-active-color: var(--il-accent-text); }
+.nav-pills { --bs-nav-pills-link-active-bg: var(--il-accent); }
+.list-group { --bs-list-group-active-bg: var(--il-accent); --bs-list-group-active-border-color: var(--il-accent); }
+.progress { --bs-progress-bar-bg: var(--il-accent); }
+.dropdown-menu { --bs-dropdown-link-active-bg: var(--il-accent); }
+
+/* Modul-Kompatibilität im Dunkelmodus: Module, deren CSS feste helle Farben setzt.
+   Bewusst klein gehalten; die eigentliche Lösung wäre, dass Module Bootstrap-Variablen nutzen. */
+[data-bs-theme="dark"] .user-regist-step .step { background-color: var(--il-surface-2); border-color: var(--il-line); }
+[data-bs-theme="dark"] .user-regist-step .activestep { color: var(--il-accent-text); }
+[data-bs-theme="dark"] .card-body.ck-content[style*="#eee"] { background: var(--il-surface-2) !important; } /* Regist: Hinweis-Text */
+[data-bs-theme="dark"] .stats .card-title { color: var(--il-ink-strong); }                                   /* Statistik: Zahlen */
+[data-bs-theme="dark"] .ilch-body { color: var(--il-ink) !important; }                                        /* Statistik: Texte */
+
+/* Kalender-Modul (FullCalendar): hat eine Mindestbreite, auf dem Handy innerhalb des Kalenders scrollen statt die ganze Seite */
+.il-content .calendar { overflow-x: auto; }
+
+/* Farbige Kopfzeilen (bg-primary) ohne eigene Textfarbe: weißer Text (Akzentfarbe ist dunkel genug) */
+.card-header.bg-primary:not([class*="text-"]) { color: #fff; }
+
+/* ==========================================================================
+   6. Seitenboxen und Download-Schaltfläche
+   ========================================================================== */
+.il-box {
+    margin-bottom: 18px;
+    background: var(--il-surface);
+    border: 1px solid var(--il-line);
+    border-radius: 10px;
+    box-shadow: var(--il-shadow-sm);
+    overflow: hidden;
+}
+
+/* Box mit Titel (Module wie Login/Archiv, eigene Boxen): roter, fetter Titel wie bei ilch.de */
+.il-box-title {
+    margin: 0;
+    padding: 10px 14px;
+    font: 700 12.5px/1.3 var(--il-font-head);
+    letter-spacing: .02em;
+    color: var(--il-accent-text);
+    background: linear-gradient(180deg, var(--il-surface) 0, var(--il-surface-2) 100%);
+    border-bottom: 1px solid var(--il-line);
+}
+
+.il-box-title:empty { display: none; }
+
+.il-box-body { padding: 12px 14px; font-size: 13px; overflow-wrap: break-word; }
+.il-box-body > :first-child { margin-top: 0; }
+.il-box-body > :last-child { margin-bottom: 0; }
+.il-box-body p { margin-bottom: .6rem; }
+.il-box-body img { border-radius: 6px; }
+.il-box-body .input-group-text { background: var(--il-surface-2); }
+
+/* Menü-Liste: schlichte Box ohne Menünamen, Pfeil-Quadrate und gepunktete Trennlinien (ilch.de) */
+.il-box--menu .il-box-body { padding: 4px 6px; }
+
+.il-list,
+.il-list ul { margin: 0; padding: 0; list-style: none; }
+
+.il-list-child { margin: 0 0 4px 12px; padding-left: 6px; border-left: 1px solid var(--il-line); }
+
+.il-list li + li { border-top: 1px dotted var(--il-dot); }
+.il-list-child li + li { border-top: 0; }
+
+.il-list li > a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 8px;
+    border-radius: 8px;
+    color: var(--il-ink-strong);
+    font-weight: 500;
+    transition: background .15s ease, color .15s ease;
+}
+
+.il-list li > a::before {
+    content: "";
+    flex: 0 0 auto;
+    width: 12px;
+    height: 12px;
+    background: currentColor;
+    -webkit-mask: var(--il-arrow-icon) center / contain no-repeat;
+    mask: var(--il-arrow-icon) center / contain no-repeat;
+    opacity: .85;
+    transition: background-color .15s ease, transform .15s var(--il-ease), opacity .15s ease;
+    --il-arrow-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath fill='%23000' fill-rule='evenodd' d='M0 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm4.4 1.2v5.6L8.6 6 4.4 3.2z'/%3E%3C/svg%3E");
+}
+
+.il-list li > a:hover,
+.il-list li.is-active > a {
+    background: var(--il-accent-soft);
+    color: var(--il-accent-text);
+}
+
+.il-list li > a:hover::before,
+.il-list li.is-active > a::before {
+    background: var(--il-accent);
+    opacity: 1;
+}
+
+.il-list li > a:hover::before { transform: translateX(2px); }
+.il-list li.is-active > a { font-weight: 700; }
+
+/* "Zum Download": helle Schaltfläche mit Titel und kursivem Untertitel (ilch.de) */
+.il-download {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    padding: 11px 14px;
+    color: var(--il-ink-strong);
+    background: linear-gradient(180deg, var(--il-surface) 0, var(--il-surface-2) 100%);
+    border: 1px solid var(--il-line);
+    border-radius: var(--il-radius);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, .7) inset, var(--il-shadow-sm);
+    transition: transform .2s var(--il-ease), border-color .2s ease, box-shadow .2s ease;
+}
+
+.il-download:hover {
+    color: var(--il-ink-strong);
+    border-color: var(--il-accent);
+    transform: translateY(-2px);
+    box-shadow: 0 14px 26px -16px rgba(var(--il-accent-rgb), .8);
+}
+
+.il-download-icon {
+    flex: 0 0 auto;
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    color: #fff;
+    font-size: 14px;
+    background: linear-gradient(180deg, var(--il-accent), var(--il-accent-700));
+    border-radius: 50%;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .3);
+    transition: transform .25s var(--il-ease);
+}
+
+.il-download:hover .il-download-icon { transform: scale(1.08); }
+
+.il-download-text { display: flex; flex-direction: column; min-width: 0; line-height: 1.25; }
+.il-download-text strong { font: 700 14.5px/1.25 var(--il-font-head); }
+.il-download-text em { font-size: 11.5px; font-style: italic; color: var(--il-muted); }
+
+/* ==========================================================================
+   7. Footer
+   ========================================================================== */
+.il-footer {
+    padding: 26px 0;
+    color: #8b8d92;
+    font-size: 12px;
+    background: linear-gradient(180deg, #2a2a2d 0, #111112 100%);
+    border-top: 1px solid #000;
+}
+
+.il-footer-inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 14px 18px;
+    padding-inline: var(--il-pad);
+}
+
+.il-feather {
+    flex: 0 0 auto;
+    width: 58px;
+    height: 58px;
+    background-repeat: no-repeat;
+    background-position: left center;
+    background-size: auto 100%;
+    opacity: .55;
+}
+
+.il-footer-text { flex: 1; min-width: 0; line-height: 1.7; }
+
+.il-footer a { color: #e8e8ea; }
+.il-footer a:hover { color: #fff; text-decoration: underline; text-decoration-color: var(--il-accent); text-underline-offset: 4px; }
+
+.il-footer-nav { display: flex; flex-wrap: wrap; font-weight: 700; }
+.il-footer-nav a + a::before {
+    content: "|";
+    display: inline-block;
+    margin: 0 .6em;
+    color: #55575c;
+    font-weight: 400;
+    text-decoration: none;
+}
+
+.il-footer-copy a { color: #b9babd; }
+
+.il-social { display: flex; gap: 8px; }
+
+.il-social a {
+    display: inline-grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    color: #b9babd;
+    border: 1px solid rgba(255, 255, 255, .14);
+    border-radius: 50%;
+    transition: background .2s ease, border-color .2s ease, transform .2s var(--il-ease);
+}
+
+.il-footer .il-social a:hover { color: #fff; background: var(--il-accent); border-color: var(--il-accent); transform: translateY(-2px); text-decoration: none; }
+
+/* Nach-oben-Button */
+.il-to-top {
+    position: fixed;
+    right: 1.25rem;
+    bottom: 1.25rem;
+    z-index: 1030;
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    color: #fff;
+    background: linear-gradient(180deg, var(--il-accent), var(--il-accent-700));
+    border-radius: 50%;
+    box-shadow: 0 10px 24px -8px rgba(var(--il-accent-rgb), .7);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(12px);
+    transition: opacity .25s var(--il-ease), transform .25s var(--il-ease), visibility .25s;
+}
+
+.il-to-top.is-visible { opacity: 1; visibility: visible; transform: none; }
+.il-to-top:hover { color: #fff; filter: brightness(1.1); }
+
+/* ==========================================================================
+   8. Responsive
+   ========================================================================== */
+@media (max-width: 1199.98px) {
+    :root { --il-left: 192px; --il-right: 192px; --il-gap: 20px; --il-pad: 20px; }
+
+    .il-nav-item > a { padding: 0 14px; font-size: 12.5px; }
+}
+
+@media (max-width: 991.98px) {
+    :root { --il-gap: 16px; --il-pad: 16px; }
+
+    .il-topbar { height: 40px; }
+    .il-wrap { padding-inline: 0; }
+    .il-navwrap { align-items: center; padding-inline: 12px; gap: 8px; }
+
+    .il-logo {
+        position: static;
+        flex: 0 0 auto;
+        width: auto;
+        height: 42px;
+        padding: 3px 10px;
+        border-radius: 10px;
+        box-shadow: none;
+    }
+    .il-logo:hover { transform: none; box-shadow: none; }
+    .il-logo img { max-height: 100%; max-width: 92px; }
+
+    .il-user { height: 100%; }
+    .il-userbtn { padding: 0 12px; }
+
+    .il-burger {
+        display: inline-grid;
+        place-items: center;
+        flex: 0 0 auto;
+        width: 40px;
+        height: 38px;
+        color: #fff;
+        background: rgba(255, 255, 255, .08);
+        border: 1px solid rgba(255, 255, 255, .18);
+        border-radius: 9px;
+        cursor: pointer;
+    }
+    .il-burger:hover,
+    .il-burger[aria-expanded="true"] { background: var(--il-accent); border-color: var(--il-accent); }
+
+    .il-mainnav {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        z-index: 50;
+        margin: 0;
+        background: #161617;
+        border-top: 1px solid rgba(255, 255, 255, .08);
+        box-shadow: 0 24px 40px -16px rgba(0, 0, 0, .7);
+    }
+
+    .il-nav { flex-direction: column; height: auto; padding: 8px 12px 14px; }
+    .il-nav > .il-nav-item + .il-nav-item > a::before { display: none; }
+    .il-nav-item > a { height: auto; padding: 12px 14px; border-radius: 8px; }
+    .il-nav > .il-nav-item > a:hover,
+    .il-nav > .il-nav-item.is-active > a { box-shadow: none; }
+
+    .il-nav-item.has-sub > a::after { display: none; }
+    .il-nav-sub {
+        position: static;
+        min-width: 0;
+        margin: 2px 0 6px 14px;
+        padding: 0 0 0 10px;
+        background: transparent;
+        border: 0;
+        border-left: 1px solid rgba(255, 255, 255, .14);
+        border-radius: 0;
+        box-shadow: none;
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+    }
+
+    .il-usermenu { width: min(300px, 100vw); }
+
+    .il-sheet { padding: 0 var(--il-pad) 32px; box-shadow: none; }
+
+    .il-grid,
+    .il-layout-2col .il-grid,
+    .il-layout-full .il-grid {
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-areas:
+            "crumb"
+            "main"
+            "left"
+            "right";
+    }
+
+    .il-side.is-empty { display: none; }
+    .il-topbar-inner { padding-inline: 12px; }
+
+    .il-crumb { margin-inline: calc(-1 * var(--il-pad)); border-radius: 0; padding-left: var(--il-pad); }
+    .il-side-left { padding-top: 8px; }
+    .il-side-right { padding-top: 0; }
+    .il-main { padding-top: 20px; }
+    .il-content h1 { font-size: 1.45rem; }
+    .il-footer-inner { padding-inline: var(--il-pad); }
+}
+
+@media (max-width: 575.98px) {
+    body { font-size: 13.5px; }
+    .il-userbtn-label { max-width: 90px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
+}
+
+/* ==========================================================================
+   9. Druck
+   ========================================================================== */
+@media print {
+    .il-topbar, .il-navband, .il-side, .il-footer, .il-skip, .il-to-top { display: none !important; }
+    body { background: #fff; color: #000; }
+    .il-grid { display: block; }
+    .il-sheet { padding: 0; box-shadow: none; }
+}
